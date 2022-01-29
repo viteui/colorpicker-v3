@@ -11,10 +11,12 @@
 1. 简单易用，UI在原插件基础上优化增加了圆角和过渡动画
 2. 提供以 npm 的形式安装提供全局组件
 3. 在支持 html5 input[type='color'] 的浏览器实现了「更多颜色」的功能
+4. 支持透明度
 ## 安装
 ```shell
 npm i colorpicker-v3
 ```
+
 
 
 ## 使用
@@ -185,3 +187,7 @@ const bColor = [
 <style lang="less" scoped>
 </style>
 ```
+
+
+## 联系方式
+QQ: 1191814251
