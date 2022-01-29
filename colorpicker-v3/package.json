@@ -1,0 +1,35 @@
+{
+  "name": "colorpicker-v3",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/colorpicker-v3.umd.js",
+  "module": "./dist/colorpicker-v3.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/colorpicker-v3.es.js",
+      "require": "./dist/colorpicker-v3.umd.js"
+    },
+    "./*": "./dist/*"
+  },
+  "keywords": [
+    "colorpicker-v3",
+    "colorpicker",
+    "vue3 colorpicker"
+  ],
+  "sideEffects": [
+    ".css"
+  ],
+  "description": "基于 vue3 的颜色选择器，支持透明度",
+  "version": "1.0.6",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colorpicker-v3": "^1.0.2",
+    "vue": "^3.2.25"
+  }
+}
