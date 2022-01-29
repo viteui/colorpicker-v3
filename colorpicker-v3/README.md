@@ -1,8 +1,9 @@
 
 # [一款支持vue3 的颜色选择器](https://www.npmjs.com/package/colorpicker-v3)
+[github](https://github.com/qingzhiSunset/colorpicker-v3)
 
 
-
+![一款支持vue3 的颜色选择器](https://img-blog.csdnimg.cn/img_convert/13354e8ac4d450bcf4cc13fa21a988b4.png)
 ## 特点
 1. 简单易用，UI在原插件基础上优化增加了圆角和过渡动画
 2. 提供以 npm 的形式安装提供全局组件

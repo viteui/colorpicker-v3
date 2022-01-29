@@ -21,15 +21,14 @@
     ".css"
   ],
   "description": "基于 vue3 的颜色选择器，支持透明度",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-
+  "repository": "github:qingzhiSunset/colorpicker-v3",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "colorpicker-v3": "^1.0.2",
     "vue": "^3.2.25"
   }
 }

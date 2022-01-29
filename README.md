@@ -1,6 +1,10 @@
 
 # [一款支持vue3 的颜色选择器](https://www.npmjs.com/package/colorpicker-v3)
 
+[github](https://github.com/qingzhiSunset/colorpicker-v3)
+
+
+![一款支持vue3 的颜色选择器](https://img-blog.csdnimg.cn/img_convert/13354e8ac4d450bcf4cc13fa21a988b4.png)
 
 
 ## 特点
