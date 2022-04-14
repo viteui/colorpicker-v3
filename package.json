@@ -7,7 +7,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "colorpicker-v3": "^1.0.6",
+    "@vueuse/core": "^7.5.5",
+    "colorpicker-v3": "^2.0.6",
+    "i": "^0.3.7",
+    "npm": "^8.4.0",
     "vue": "^3.2.25"
   },
   "devDependencies": {

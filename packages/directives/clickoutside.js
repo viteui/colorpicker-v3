@@ -1,3 +1,4 @@
+import { isClient } from '@vueuse/core'
 const nodeList = []
 const ctx = '@@clickContext'
 
@@ -7,10 +8,13 @@ let seed = 0
 // if (process.isClient) {
 
 // }
-document.addEventListener('mousedown', e => (startClick = e))
-document.addEventListener('mouseup', e => {
-    nodeList.forEach(node => node[ctx].documentHandler(e, startClick))
-})
+if (isClient) {
+    document.addEventListener('mousedown', e => (startClick = e))
+    document.addEventListener('mouseup', e => {
+        nodeList.forEach(node => node[ctx].documentHandler(e, startClick))
+    })
+}
+
 function createDocumentHandler(el, binding, vnode) {
     return function (mouseup = {}, mousedown = {}) {
         //  点击当前节点

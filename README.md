@@ -25,7 +25,7 @@ npm i colorpicker-v3
 import { createApp } from 'vue'
 import App from './App.vue'
 import ColorPicker from 'colorpicker-v3'  // 注册组件
-import 'colorpicker-v3/dist/style.css' // 引入样式文件
+import 'colorpicker-v3/style.css' // 引入样式文件
 const app = createApp(App)
 app.use(ColorPicker)
 app.mount('#app')
@@ -33,19 +33,69 @@ app.mount('#app')
 ```
 ### 组件中使用
 #### vue3 + js
+#### 使用 hex 值响应式
+> `hex` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值 
 ```html
 
 <template>
-  <color-picker @change="change" :value="color"></color-picker>
+  <color-picker @change="change" v-model:hex="hex"></color-picker>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-const color = ref("#ffffff");
-const colorRgba = ref("#eeeeee")
+const hex = ref("#ffffff");
 const change = (e) => {
-  console.log(e)
-  colorRgba.value = e.rgba
+  console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
+}
+</script>
+
+<style>
+</style>
+
+ 
+```
+
+#### 使用 rgba 值响应式
+> *  `rgba` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值
+```html
+
+<template>
+  <color-picker @change="change" v-model:rgba="rgba"></color-picker>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const rgba = ref("rgba(255,0,255,0.5)");
+
+const change = (e) => {
+  console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
+}
+</script>
+
+<style>
+</style>
+
+ 
+```
+
+
+
+#### 使用 rgba 与 hex 值响应式
+> *  `rgba` 与 `hex` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值
+> * 注意点 此时如果 `hex` 与 `rgba`  都有值时 此时会优先显示  `rgba`  的值
+
+```html
+
+<template>
+  <color-picker @change="change" v-model:rgba="rgba" v-model:hex="hex"></color-picker>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const rgba = ref("rgba(255,0,255,0.5)");
+const hex = ref("#ffffff"); 
+const change = (e) => {
+  console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
 }
 </script>
 
@@ -56,32 +106,27 @@ const change = (e) => {
 ```
 #### vue+ts+setup
 ```html
-
 <template>
-  <color-picker @change="change" :value="color"></color-picker>
+  <color-picker @change="change" v-model:hex="hex"></color-picker>
 </template>
 
-<script setup lang="ts">
-
+<script setup>
 import { ref } from 'vue';
-const color = ref("#ffffff");
-const colorRgba = ref("#eeeeee")
+const hex = ref("#ffffff");
 const change = (e) => {
-  console.log(e)
-  colorRgba.value = e.rgba
+  console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
 }
 </script>
 
 <style>
 </style>
-
- 
 ```
 
 ## Props
 参数名   |描述  |  类型 | 默认值 |备注
 -------- | ----- | ----- | -------- | -----
-value | 初始化颜色值 |string | #000000 | 使用完整的16进制值
+hex | 初始化颜色值 |string | #000000 | 使用16进制值
+hex | 初始化颜色值 |string | rgba(255,0,255,0.5) | 使用RGBA字符串
 btnStyle | 设置颜色块样式|Object| -  |  - 
 opacity|颜色透明度初始值|numer | 100 | 0~100 数值越小透明度越低
 show-opacity|是否显示透明度控制块|boolean| true| 
@@ -135,7 +180,7 @@ close | 选色面板关闭 | data: {hex:string,rgba: string}|  -
 ```html
 <template>
   <color-picker
-    :value="color"
+    :hex="color"
     @change="change"
     :standard-color="bColor"
     @close="close"

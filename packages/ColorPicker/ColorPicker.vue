@@ -1,83 +1,50 @@
 <template>
-    <div
-        class="zs-color-picker"
-        ref="colorPicker"
-        v-clickoutside="closePanel"
-        @click="(e) => e.stopPropagation()"
-    >
+    <div class="zs-color-picker" ref="colorPicker" v-clickoutside="closePanel" @click="(e) => e.stopPropagation()">
         <!-- 颜色选择入口 -->
-        <div
-            class="zs-color-picker-btn"
-            :style="{ backgroundColor: showColor, ...btnStyle }"
-            @click="openPanel"
-        />
+        <div class="zs-color-picker-btn" :style="{ ...btnStyle }" @click="openPanel">
+            <div class="zs-color-picker-btn-color" :style="{ backgroundColor: showColor, }"></div>
+            {{ showColor }}
+        </div>
 
         <!-- 颜色选择面板 -->
-        <div
-            :class="[
-                'zs-color-picker-panel',
-                colorPanelVisible ? 'zs-color-picker-panel__visible' : '',
-            ]"
-        >
+        <div :class="[
+            'zs-color-picker-panel',
+            colorPanelVisible ? 'zs-color-picker-panel__visible' : '',
+        ]">
             <div class="panel-header">
-                <div class="color-view" :style="`background-color: ${showPanelColor}`" />
-                <div
-                    class="default-color"
-                    @mouseover="hoveColor = defaultColor"
-                    @mouseout="hoveColor = null"
-                    @click="handleDefaultColor"
-                >默认颜色</div>
+                <div class="color-view-bg">
+                    <div class="color-view" :style="`background-color: ${showPanelColor}`"></div>
+                </div>
+                <div class="default-color" @mouseover="hoveColor = defaultColor" @mouseout="hoveColor = null"
+                    @click="handleDefaultColor">默认颜色</div>
             </div>
 
             <div class="panel-main">
                 <h3>主题颜色</h3>
                 <ul class="theme-color">
-                    <li
-                        v-for="(color, index) of colorReactive.tColor"
-                        :key="index"
-                        :style="{ backgroundColor: color }"
-                        @mouseover="mouseroverColor(color)"
-                        @mouseout="hoveColor = null"
-                        @click="updataValue(color)"
-                    />
+                    <li v-for="(color, index) of colorReactive.tColor" :key="index" :style="{ backgroundColor: color }"
+                        @mouseover="hoverChangeColor(color)" @mouseout="hoveColor = null" @click="updataValue(color)" />
                 </ul>
                 <ul class="standard-color">
                     <li v-for="(item, index) of colorPanel" :key="index">
                         <ul>
-                            <li
-                                v-for="(color, cindex) of item"
-                                :key="cindex"
-                                :style="{ backgroundColor: color }"
-                                @mouseover="hoveColor = color"
-                                @mouseout="hoveColor = null"
-                                @click="updataValue(color)"
-                            />
+                            <li v-for="(color, cindex) of item" :key="cindex" :style="{ backgroundColor: color }"
+                                @mouseover="hoverChangeColor(color)" @mouseout="hoveColor = null"
+                                @click="updataValue(color)" />
                         </ul>
                     </li>
                 </ul>
 
                 <h3>标准颜色</h3>
                 <ul class="theme-color">
-                    <li
-                        v-for="(color, index) of bColor"
-                        :key="index"
-                        :style="{ backgroundColor: color }"
-                        @mouseover="hoveColor = color"
-                        @mouseout="hoveColor = null"
-                        @click="updataValue(color)"
-                    />
+                    <li v-for="(color, index) of bColor" :key="index" :style="{ backgroundColor: color }"
+                        @mouseover="hoverChangeColor(color)" @mouseout="hoveColor = null" @click="updataValue(color)" />
                 </ul>
                 <template v-if="showOpacity">
                     <h3>透明度</h3>
-                    <input
-                        type="range"
-                        max="100"
-                        min="1"
-                        step="0.01"
-                        v-model="opacity"
-                        class="gradient"
-                        @input="opacityChange"
-                    />
+                    <input type="range" max="1" min="0" step="0.0001" v-model="opacity" class="gradient"
+                        @input="opacityChange" />
+                    {{ opacity }}
                 </template>
 
                 <div class="bottom-btn">
@@ -86,23 +53,17 @@
                 </div>
 
                 <!-- HTML DOM Color 对象 -->
-                <input
-                    class="color-input"
-                    type="color"
-                    ref="html5ColorRef"
-                    v-model="colorReactive.html5Color"
-                    @change="changeH5Color"
-                    @input="changeH5Color"
-                />
+                <input class="color-input" type="color" ref="html5ColorRef" v-model="colorReactive.html5Color"
+                    @change="changeH5Color" @input="changeH5Color" />
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import clickoutside from './directives/clickoutside'
+import clickoutside from '../directives/clickoutside'
 
 export default defineComponent({
-    name: 'color-picker',
+    name: 'colorPicker',
     // 自定义 v-click命令
     directives: { clickoutside },
 })
@@ -115,16 +76,19 @@ import { ref } from 'vue'
 
 const props = defineProps({
     // 当前选中的颜色值
-    value: {
+    hex: {
         type: [String, undefined],
     },
-    // modelValue: {
-    //     type: String,
-    // },
+    modelValue: {
+        type: String,
+    },
+    rgba: {
+        type: String,
+    },
     // 默认颜色
     defaultColor: {
         type: String,
-        default: '#00000',
+        default: '#000000',
     },
 
     // 入口按钮样式
@@ -134,7 +98,7 @@ const props = defineProps({
     opacity: {
         type: [Number, String],
         default() {
-            return 100
+            return 1
         }
     },
     showOpacity: {
@@ -194,7 +158,7 @@ const colorReactive = reactive({
     // 颜色面板显隐
     visible: false,
     // 用户输入的颜色值
-    html5Color: props.value,
+    html5Color: props.hex,
 
     // 主题颜色
     tColor: props.themeColor as string[],
@@ -217,7 +181,10 @@ const colorReactive = reactive({
 })
 
 // 显示面板颜色
-const showPanelColor = ref("")
+const showPanelColor = ref(hexToRgbaStr(props.hex !== "" && props.hex ? props.hex : props.defaultColor, opacity.value))
+if (props.rgba && props.rgba.length) {
+    showPanelColor.value = props.rgba
+}
 watch(hoveColor, () => {
     // console.log("改变了", hoveColor.value)
     if (hoveColor.value) {
@@ -229,17 +196,20 @@ watch(hoveColor, () => {
 
 
 
-const mouseroverColor = (color) => {
-    // console.log(color);
-    hoveColor.value = color
-    // console.log("-----", hoveColor.value)
-}
+// const mouseroverColor = (color) => {
+//     // console.log(color);
+//     hoveColor.value = color
+//     // console.log("-----", hoveColor.value)
+// }
 
-const colorValue = ref(props.value);
+const colorValue = ref(props.hex !== "" && props.hex ? props.hex : props.defaultColor);
 
 // 展示当前选中的颜色值
-const showColor = ref(hexToRgba(props.defaultColor, opacity.value))
-
+const showColor = ref(hexToRgbaStr(props.hex !== "" && props.hex ? props.hex : props.defaultColor, opacity.value))
+if (props.rgba && props.rgba.length) {
+    showColor.value = props.rgba
+}
+console.log(showColor.value)
 // 颜色面板
 const colorPanel = computed(() => {
     const colorArr = []
@@ -277,26 +247,81 @@ const emits = defineEmits<{
     (event: "input", value: string): void,
     (event: "change", value: { hex: string, rgba: string }): void,
     (event: "finish", value: { hex: string, rgba: string }): void,
+    (event: "update:hex", hex: string): void,
+    (event: "update:rgba", rgba: string): void,
     (event: "close", value: { hex: string, rgba: string }): void,
     // (event: "rgbaChange", : string): void,
-    // (event: "update:modelValue", value: string): void,
+    (event: "update:modelValue", value: string): void,
 }>()
 
 //  hex 转 rgba
-function hexToRgba(hex, opacity) {
 
-    return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
-        + parseInt('0x' + hex.slice(5, 7)) + ',' + (opacity / 100) + ')';
+
+function hex2rgbaObj(s) {
+    if (/^#?[0-9a-fA-F]{3}$/.test(s)) {
+        let b = s.substring(s.length - 1, s.length);
+        let g = s.substring(s.length - 2, s.length - 1);
+        let r = s.substring(s.length - 3, s.length - 2);
+        return hex2rgbaObj(`${r + r}${g + g}${b + b}`);
+    }
+    if (/^#?[0-9a-fA-F]{4}$/.test(s)) {
+        let a = s.substring(s.length - 1, s.length);
+        let b = s.substring(s.length - 2, s.length - 1);
+        let g = s.substring(s.length - 3, s.length - 2);
+        let r = s.substring(s.length - 4, s.length - 3);
+        return hex2rgbaObj(`${r + r}${g + g}${b + b}${a + a}`);
+    }
+    if (/^#?[0-9a-fA-F]{6}$/.test(s)) {
+        let b = parseInt('0x' + s.substring(s.length - 2, s.length));
+        let g = parseInt('0x' + s.substring(s.length - 4, s.length - 2));
+        let r = parseInt('0x' + s.substring(s.length - 6, s.length - 4));
+        return { r, g, b, a: 1 };
+    }
+    if (/^#?[0-9a-fA-F]{8}$/.test(s)) {
+        let a = parseInt('0x' + s.substring(s.length - 2, s.length));
+        a = a / 255;
+        let b = parseInt('0x' + s.substring(s.length - 4, s.length - 2));
+        let g = parseInt('0x' + s.substring(s.length - 6, s.length - 4));
+        let r = parseInt('0x' + s.substring(s.length - 8, s.length - 6));
+        return { r, g, b, a };
+    }
+}
+function hexToRgbaStr(hex, opacity) {
+    // console.log(hex)
+    const { r, g, b, a } = hex2rgbaObj(hex)
+
+    //  透明度 opacity 优先级 高于 16 进制值
+    let alpha = a;
+    if (a === 1 && opacity === 1) {
+        alpha = 1
+    } else if (a !== 1 && opacity === 1) {
+        alpha = a
+    } else if (a === 1 && opacity !== 1) {
+        alpha = opacity
+    }
+    return `rgba(${r},${g},${b},${alpha})`
+
+    // console.log(hex)
+    // if (/^#?[0-9a-fA-F]{3}$/.test(hex)) {
+    //     let b = hex.substring(hex.length - 1, hex.length);
+    //     let g = hex.substring(hex.length - 2, hex.length - 1);
+    //     let r = hex.substring(hex.length - 3, hex.length - 2);
+    //     return `rgba(${r},${g},${b},${(opacity / 100).toFixed(3)}`
+    // }
+    // return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+    //     + parseInt('0x' + hex.slice(5, 7)) + ',' + (opacity / 100).toFixed(3) + ')';
 }
 // 更新组件的值 value
-const updataValue = (value) => {
-    colorValue.value = value
-    showColor.value = hexToRgba(value, opacity.value)
-    showPanelColor.value = hexToRgba(value, opacity.value)
-    emits('input', value)
-    emits('change', { hex: value, rgba: hexToRgba(value, opacity.value) })
+const updataValue = (hex) => {
+    colorValue.value = hex
+    showColor.value = hexToRgbaStr(hex, opacity.value)
+    showPanelColor.value = hexToRgbaStr(hex, opacity.value)
+    emits('input', hex)
+    emits('update:hex', hex)
+    emits('update:rgba', hexToRgbaStr(hex, opacity.value))
+    emits('change', { hex: hex, rgba: hexToRgbaStr(hex, opacity.value) })
     // emits('rgbaChange', hexToRgb(value))
-    // emits('update:modelValue', value)
+    // emits('update:modelValue', hex)
 
 
 
@@ -307,10 +332,12 @@ const rgbToHex = (r, g, b) => {
     return '#' + new Array(Math.abs(hex.length - 7)).join('0') + hex
 }
 
+//  打开面板
 const openPanel = () => {
     colorPanelVisible.value = !colorPanelVisible.value
 }
 
+// 色块变化
 const gradientValue = (startColor, endColor, step) => {
     // 讲 hex 转换为 rgb
     const sColor = hexToRgb(startColor)
@@ -335,11 +362,18 @@ const gradientValue = (startColor, endColor, step) => {
     return gradientColorArr
 }
 
+//  关闭面板
 const closePanel = () => {
-    console.log("sdsd")
-    colorPanelVisible.value = false
-    emits("close", { hex: colorValue.value, rgba: hexToRgba(colorValue.value, opacity.value) })
 
+    colorPanelVisible.value = false
+    emits("close", { hex: colorValue.value, rgba: hexToRgbaStr(colorValue.value, opacity.value) })
+
+}
+
+const hoverChangeColor = (color: string) => {
+    // 
+    // updataValue(color)
+    hoveColor.value = hexToRgbaStr(color, opacity.value)
 }
 
 const triggerHtml5Color = () => {
@@ -354,6 +388,8 @@ const handleDefaultColor = () => {
 const changeH5Color = (e) => {
     updataValue(html5ColorRef.value.value)
 }
+
+//  透明度改变时颜色变化
 const opacityChange = () => {
     updataValue(colorValue.value)
 
@@ -361,7 +397,7 @@ const opacityChange = () => {
 
 const cllickFinsh = () => {
     colorPanelVisible.value = false
-    emits("finish", { hex: colorValue.value, rgba: hexToRgba(colorValue.value, opacity.value) })
+    emits("finish", { hex: colorValue.value, rgba: hexToRgbaStr(colorValue.value, opacity.value) })
 }
 
 </script>
@@ -419,11 +455,22 @@ const cllickFinsh = () => {
 
 /* 入口按钮， 默认宽高位15px */
 .zs-color-picker-btn {
-    width: 15px;
-    height: 15px;
-    background-color: #000;
+    width: 24px;
+    height: 24px;
+    /* background-color: #000; */
     cursor: pointer;
     border: 1px solid #eee;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAWElEQVRIiWM8fubkfwYygKWJOSM5+mCAhRLNoxaPWjxq8ajFoxbTyeL/DAfJ0Xjs3Cl7Siwmu4Yht1aDgZEYx6MWj1o8avGoxaMWD3qLya5X//4nqx6HAQC7RBGFzolqTAAAAABJRU5ErkJggg==");
+    background-size: 10px 10px;
+    /* border-radius: 5px; */
+}
+
+.zs-color-picker-btn .zs-color-picker-btn-color {
+    box-sizing: border-box;
+    border: 4px solid #fff;
+
+    width: 100%;
+    height: 100%;
 }
 
 .panel-header {
@@ -431,10 +478,18 @@ const cllickFinsh = () => {
     line-height: 29px;
 }
 
+.color-view-bg {
+    width: 100px;
+    height: 30px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAWElEQVRIiWM8fubkfwYygKWJOSM5+mCAhRLNoxaPWjxq8ajFoxbTyeL/DAfJ0Xjs3Cl7Siwmu4Yht1aDgZEYx6MWj1o8avGoxaMWD3qLya5X//4nqx6HAQC7RBGFzolqTAAAAABJRU5ErkJggg==");
+    background-size: 10px 10px;
+    float: left;
+}
+
 .color-view {
     width: 100px;
     height: 30px;
-    float: left;
+
     transition: background-color 0.3s ease;
 }
 
@@ -466,6 +521,7 @@ const cllickFinsh = () => {
     display: inline-block;
     margin: 0 2px;
 }
+
 .standard-color li li {
     display: block;
     width: 15px;
@@ -492,6 +548,7 @@ ol {
     align-items: center;
     flex-direction: row;
 }
+
 .bottom-btn .finsh {
     margin-left: auto;
     background: rgb(0, 162, 255);

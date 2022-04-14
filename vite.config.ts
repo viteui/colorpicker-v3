@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, 'colorpicker-v3/dist'),
     lib: {
-      entry: path.resolve(__dirname, '/packages/ColorPicker/index.ts'),
+      entry: path.resolve(__dirname, '/packages/ColorPicker/index.js'),
       name: 'colorpicker-v3',
       fileName: (format) => `colorpicker-v3.${format}.js`
     },
