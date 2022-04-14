@@ -128,7 +128,7 @@ const change = (e) => {
 hex | 初始化颜色值 |string | #000000 | 使用16进制值
 hex | 初始化颜色值 |string | rgba(255,0,255,0.5) | 使用RGBA字符串
 btnStyle | 设置颜色块样式|Object| -  |  - 
-opacity|颜色透明度初始值|numer | 100 | 0~100 数值越小透明度越低
+opacity|颜色透明度初始值|numer | 1 | 0~1 数值越小透明度越低
 show-opacity|是否显示透明度控制块|boolean| true| 
 standard-color|标准色初始化配置|`Array<string>`|[standard-clolor详情](#standard-clolor) | 使用完整的hex16 进制值
 theme-color|主题色初始化配置|`Array<string>`|[theme-clolor详情](#theme-clolor) | 使用完整的hex16 进制值
