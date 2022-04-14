@@ -232,6 +232,6 @@ const bColor = [
 ```
 
 ## 联系作者
-![作者微信](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-903f47e3-327e-4ce0-9a38-514311eeff89/5da02770-9e4b-4d9e-8a77-c69b833ac9af.png 300x300)
+![作者微信](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-903f47e3-327e-4ce0-9a38-514311eeff89/5da02770-9e4b-4d9e-8a77-c69b833ac9af.png = 300x300)
 
 QQ： 1191814251
