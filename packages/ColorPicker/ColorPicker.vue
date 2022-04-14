@@ -208,7 +208,7 @@ const showColor = ref(hexToRgbaStr(props.hex !== "" && props.hex ? props.hex : p
 if (props.rgba && props.rgba.length) {
     showColor.value = props.rgba
 }
-console.log(showColor.value)
+// console.log(showColor.value)
 // 颜色面板
 const colorPanel = computed(() => {
     const colorArr = []
