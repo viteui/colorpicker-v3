@@ -25,7 +25,7 @@ npm i colorpicker-v3
 import { createApp } from 'vue'
 import App from './App.vue'
 import ColorPicker from 'colorpicker-v3'  // 注册组件
-import 'colorpicker-v3/dist/style.css' // 引入样式文件
+import 'colorpicker-v3/style.css' // 引入样式文件
 const app = createApp(App)
 app.use(ColorPicker)
 app.mount('#app')
@@ -83,7 +83,7 @@ const change = (e) => {
 -------- | ----- | ----- | -------- | -----
 value | 初始化颜色值 |string | #000000 | 使用完整的16进制值
 btnStyle | 设置颜色块样式|Object| -  |  - 
-opacity|颜色透明度初始值|numer | 100 | 0~100 数值越小透明度越低
+opacity|颜色透明度初始值|numer | 1 | 0~1 数值越小透明度越低
 show-opacity|是否显示透明度控制块|boolean| true| 
 standard-color|标准色初始化配置|`Array<string>`|[standard-clolor详情](#standard-clolor) | 使用完整的hex16 进制值
 theme-color|主题色初始化配置|`Array<string>`|[theme-clolor详情](#theme-clolor) | 使用完整的hex16 进制值
