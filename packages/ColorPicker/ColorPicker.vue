@@ -3,7 +3,6 @@
         <!-- 颜色选择入口 -->
         <div class="zs-color-picker-btn" :style="{ ...btnStyle }" @click="openPanel">
             <div class="zs-color-picker-btn-color" :style="{ backgroundColor: showColor, }"></div>
-            {{ showColor }}
         </div>
 
         <!-- 颜色选择面板 -->
