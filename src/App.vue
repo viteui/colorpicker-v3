@@ -1,6 +1,7 @@
 <template>
 
-  <color-picker opacity="1" v-model:hex="hex" @change="change" v-model:rgba="rgba"></color-picker>
+  <color-picker opacity="1" :defaultColor="defaultColor" v-model:hex="hex" @change="change" v-model:rgba="rgba">
+  </color-picker>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
@@ -14,8 +15,9 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 // const color = ref("#f0f")
-const hex = ref("#6c8198")
-const rgba = ref("rgba(255,0,255,0.5)")
+const hex = ref("")
+const rgba = ref("rgba(255,0,255,0.5)");
+const defaultColor = ref("#6c8198")
 const value = ref("")
 const change = (e) => {
   console.log(e, hex.value, rgba.value)

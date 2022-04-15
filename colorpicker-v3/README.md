@@ -33,8 +33,35 @@ app.mount('#app')
 ```
 ### 组件中使用
 #### vue3 + js
+
+#### 使用 default-value 设置默认值
+> * `default-value` 设置颜色默认值
+
+```html
+
+<template>
+  <color-picker @change="change" :defaultColor="defaultColor" v-model:hex="hex"></color-picker>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const hex = ref("");
+const defaultColor = ref("#6c8198")
+const change = (e) => {
+  console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
+}
+</script>
+
+<style>
+</style>
+
+ 
+```
 #### 使用 hex 值响应式
 > `hex` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值 
+> 说明： 
+> * 如果默认 `hex` 进行双向数据绑定， 该值如果不是`""` 优先级会高于 `default-value`
+> * 优先显示 `hex`值
 ```html
 
 <template>
@@ -57,6 +84,7 @@ const change = (e) => {
 
 #### 使用 rgba 值响应式
 > *  `rgba` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值
+
 ```html
 
 <template>
@@ -82,8 +110,8 @@ const change = (e) => {
 
 #### 使用 rgba 与 hex 值响应式
 > *  `rgba` 与 `hex` 本身具有响应式功能,也可以通过 `@change` 事件获取 改变的值
-> * 注意点 此时如果 `hex` 与 `rgba`  都有值时 此时会优先显示  `rgba`  的值
-
+> * 注意点: 
+> * 此时如果 `hex` 与 `rgba`  都有值时 此时会优先显示  `rgba`  的值,优先级高于 `hex`
 ```html
 
 <template>
@@ -125,13 +153,19 @@ const change = (e) => {
 ## Props
 参数名   |描述  |  类型 | 默认值 |备注
 -------- | ----- | ----- | -------- | -----
-v-model:hex | 初始化颜色值 |string | #000000 | 使用16进制值
-v-model:rgba | 初始化颜色值 |string | rgba(255,0,255,0.5) | 使用RGBA字符串
+default-color | 初始化颜色值 |string | #000000 | 使用16进制值
+v-model:hex | 初始化颜色值(双向数据绑定) |string | #000000 | 使用16进制值
+v-model:rgba | 初始化颜色值(双向数据绑定） |string | rgba(255,0,255,0.5) | 使用RGBA字符串
 btnStyle | 设置颜色块样式|Object| -  |  - 
 opacity|颜色透明度初始值|numer | 1 | 0~1 数值越小透明度越低
 show-opacity|是否显示透明度控制块|boolean| true| 
 standard-color|标准色初始化配置|`Array<string>`|[standard-clolor详情](#standard-clolor) | 使用完整的hex16 进制值
 theme-color|主题色初始化配置|`Array<string>`|[theme-clolor详情](#theme-clolor) | 使用完整的hex16 进制值
+
+> 注意点：
+> * 初始值优先级： default-color < hex <  rgba
+
+
 #### <span id="standard-clolor">standard-clolor</span>
 ```js
 const standardClolor = [
@@ -230,3 +264,11 @@ const bColor = [
 <style lang="less" scoped>
 </style>
 ```
+
+## 联系作者
+### 微信
+<img src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-903f47e3-327e-4ce0-9a38-514311eeff89/5da02770-9e4b-4d9e-8a77-c69b833ac9af.png" width="20%">
+
+
+### QQ：
+ 1191814251

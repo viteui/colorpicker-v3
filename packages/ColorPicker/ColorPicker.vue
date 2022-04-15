@@ -184,6 +184,7 @@ const showPanelColor = ref(hexToRgbaStr(props.hex !== "" && props.hex ? props.he
 if (props.rgba && props.rgba.length) {
     showPanelColor.value = props.rgba
 }
+// const defautColor = ref(showPanelColor.value)
 watch(hoveColor, () => {
     // console.log("改变了", hoveColor.value)
     if (hoveColor.value) {

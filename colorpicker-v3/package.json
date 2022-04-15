@@ -21,7 +21,7 @@
     ".css"
   ],
   "description": "基于 vue3 的颜色选择器，支持透明度",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
