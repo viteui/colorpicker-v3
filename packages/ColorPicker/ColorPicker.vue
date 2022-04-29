@@ -186,12 +186,41 @@ if (props.rgba && props.rgba.length) {
 }
 // const defautColor = ref(showPanelColor.value)
 watch(hoveColor, () => {
-    // console.log("改变了", hoveColor.value)
     if (hoveColor.value) {
         showPanelColor.value = hoveColor.value
     } else {
         showPanelColor.value = showColor.value
     }
+})
+
+watch(() => props.hex, (newValue, _) => {
+    if ((/^#?[0-9a-fA-F]{3}$/.test(newValue) || /^#?[0-9a-fA-F]{4}$/.test(newValue) || /^#?[0-9a-fA-F]{5}$/.test(newValue) || /^#?[0-9a-fA-F]{6}$/.test(newValue) || /^#?[0-9a-fA-F]{8}$/.test(newValue)) && newValue.trim().length <= 9 && newValue.trim().length != 6 && newValue.trim().length != 8) {
+        showColor.value = hexToRgbaStr(newValue, 1)
+        showPanelColor.value = hexToRgbaStr(newValue, 1)
+    }
+})
+// 验证是否为 rgba｜rgb
+function checkColorRgba(bgVal) {
+    let type;
+    if (/^rgb\(/.test(bgVal)) {
+        //如果是rgb开头，200-249，250-255，0-199
+        type = "^[rR][gG][Bb][\(]([\\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?)[\\s]*,){2}[\\s]*(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)[\\s]*[\)]{1}$";
+    } else if (/^rgba\(/.test(bgVal)) {
+        //如果是rgba开头，判断0-255:200-249，250-255，0-199 判断0-1：0 1 1.0 0.0-0.9
+        type = "^[rR][gG][Bb][Aa][\(]([\\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?)[\\s]*,){3}[\\s]*(1|1.0|0|0.[0-9])[\\s]*[\)]{1}$";
+    }
+    const re = new RegExp(type)
+    if (bgVal.match(re)) {
+        return true;
+    }
+    return false;
+}
+watch(() => props.rgba, (newValue, _) => {
+    if (checkColorRgba(newValue)) {
+        showPanelColor.value = newValue
+        showColor.value = newValue
+    }
+
 })
 
 

@@ -2,6 +2,7 @@
 
   <color-picker opacity="1" :defaultColor="defaultColor" v-model:hex="hex" @change="change" v-model:rgba="rgba">
   </color-picker>
+  <input v-model="rgba" placeholder="" @input="inputChange" placeholder-class="input-placeholder" />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
@@ -21,6 +22,10 @@ const defaultColor = ref("#6c8198")
 const value = ref("")
 const change = (e) => {
   console.log(e, hex.value, rgba.value)
+}
+const inputChange = (e) => {
+  // console.log(e.target.value)
+  // console.log(hex.value)
 }
 </script>
 <style lang="less" scoped>
