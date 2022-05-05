@@ -198,6 +198,10 @@ watch(() => props.hex, (newValue, _) => {
         showColor.value = hexToRgbaStr(newValue, 1)
         showPanelColor.value = hexToRgbaStr(newValue, 1)
     }
+    if (newValue.length === 0 || newValue == "") {
+        showColor.value = hexToRgbaStr(newValue, 1)
+        showPanelColor.value = hexToRgbaStr(newValue, 1)
+    }
 })
 // 验证是否为 rgba｜rgb
 function checkColorRgba(bgVal) {
@@ -219,6 +223,10 @@ watch(() => props.rgba, (newValue, _) => {
     if (checkColorRgba(newValue)) {
         showPanelColor.value = newValue
         showColor.value = newValue
+    }
+    if (newValue.length === 0 || newValue == "") {
+        showColor.value = ""
+        showPanelColor.value = ""
     }
 
 })
